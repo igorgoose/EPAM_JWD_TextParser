@@ -1,11 +1,11 @@
-package by.schepov.chain.impl;
+package by.schepov.parser.impl;
 
-import by.schepov.chain.Parser;
+import by.schepov.parser.Parser;
 import by.schepov.composite.TextComponent;
 import by.schepov.exception.ParserException;
 
 
-public abstract class TextUnitParser implements Parser{
+public abstract class TextUnitParser implements Parser {
     protected Parser nextParser;
 
 

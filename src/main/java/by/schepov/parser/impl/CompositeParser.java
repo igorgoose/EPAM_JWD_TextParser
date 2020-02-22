@@ -1,4 +1,4 @@
-package by.schepov.chain.impl;
+package by.schepov.parser.impl;
 
 import by.schepov.composite.TextComponent;
 import by.schepov.composite.impl.TextComposite;
