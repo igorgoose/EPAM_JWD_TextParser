@@ -3,6 +3,8 @@
 # Edit at https://www.gitignore.io/?templates=java,maven
 
 ### Java ###
+.idea/
+
 # Compiled class file
 *.class
 
