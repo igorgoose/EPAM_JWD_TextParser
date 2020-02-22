@@ -9,7 +9,6 @@ import java.util.List;
 public class TextComposite implements TextComponent {
 
     private LinkedList<TextComponent> children;
-
     private TextCompositeType type;
 
     public TextComposite(){
@@ -18,6 +17,7 @@ public class TextComposite implements TextComponent {
 
     public TextComposite(TextCompositeType type){
         this.type = type;
+        children = new LinkedList<TextComponent>();
     }
 
     public void add(TextComponent component){
@@ -36,7 +36,13 @@ public class TextComposite implements TextComponent {
         this.type = type;
     }
 
-    public void execute() {
-
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (TextComponent component: children) {
+            stringBuilder.append(component.toString());
+        }
+        return stringBuilder.toString();
     }
+
 }
