@@ -2,7 +2,9 @@ package by.schepov.reader.impl;
 
 import by.schepov.exception.FileTextReaderException;
 import by.schepov.exception.FileTextReaderReadException;
+import by.schepov.main.Main;
 import by.schepov.reader.TextReader;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -10,7 +12,8 @@ import java.util.Arrays;
 
 public class FileTextReader implements TextReader {
 
-    public static final String DEFAULT_FILENAME = "input.txt";
+    private static final String DEFAULT_FILENAME = "input.txt";
+    private static final Logger LOGGER = Logger.getLogger(FileTextReader.class);
 
     private File file;
 
@@ -41,6 +44,7 @@ public class FileTextReader implements TextReader {
         try {
             return Arrays.toString(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
+            LOGGER.error(e);
             throw new FileTextReaderReadException(e);
         }
     }

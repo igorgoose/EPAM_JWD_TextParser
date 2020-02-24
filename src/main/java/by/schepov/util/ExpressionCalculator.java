@@ -3,12 +3,13 @@ package by.schepov.util;
 import by.schepov.exception.ExpressionCalculatorException;
 import by.schepov.exception.OperatorException;
 import by.schepov.parser.impl.ExpressionParser;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class ExpressionCalculator {
-
+    private static final Logger LOGGER = Logger.getLogger(ExpressionCalculator.class);
     private static final Pattern NUMBER_REGEX = Pattern.compile(ExpressionParser.getNumberRegex());
 
     private ExpressionCalculator() {
@@ -40,12 +41,14 @@ public class ExpressionCalculator {
             checkNotEmptyStack(stack);
             return stack.pop();
         } catch (OperatorException e) {
+            LOGGER.warn(e);
             throw new ExpressionCalculatorException("Invalid operator", e);
         }
     }
 
     private static void checkNotEmptyStack(Deque<Integer> stack) throws ExpressionCalculatorException {
         if(stack.isEmpty()){
+            LOGGER.warn("Stack is empty when should not be");
             throw new ExpressionCalculatorException("Invalid expression passed!");
         }
     }

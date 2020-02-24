@@ -9,8 +9,12 @@ import by.schepov.composite.impl.TextCompositeType;
 import by.schepov.exception.ParserException;
 import by.schepov.exception.ParserInitializationException;
 import by.schepov.parser.impl.ExpressionParser;
+import org.apache.log4j.Logger;
 
 public class Main {
+
+    private static final Logger LOGGER = Logger.getLogger(Main.class);
+
     private static Parser createParser() throws ParserInitializationException {
         Parser parser = null, nextParser, parserToReturn = null;
         for (TextCompositeType type :
@@ -47,13 +51,8 @@ public class Main {
             System.out.println("sorting paragraphs_____________________________________________");
             textComponent.sort();
             System.out.println(textComponent.toString());
-        } catch (ParserInitializationException e) {
-            e.printStackTrace();
-        } catch (ParserException e) {
-            e.printStackTrace();
-        } catch (ExpressionParserException e) {
-            e.printStackTrace();
+        } catch (ParserInitializationException | ExpressionParserException | ParserException e) {
+            LOGGER.error(e);
         }
-
     }
 }

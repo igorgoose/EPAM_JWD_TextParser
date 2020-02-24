@@ -3,15 +3,16 @@ package by.schepov.parser.impl;
 import by.schepov.exception.*;
 import by.schepov.util.ExpressionCalculator;
 import by.schepov.util.ExpressionPolishNotationConverter;
+import org.apache.log4j.Logger;
+
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExpressionParser {
 
-    private ExpressionParser(){
+    private static final Logger LOGGER = Logger.getLogger(ExpressionParser.class);
 
-    }
     private final static String NUMBER_REGEX = "((\\d+)(\\.\\d+)?)";
     private final static String PRENUMBER_REGEX = "(~*\\(*~*\\(*)";
     private final static String POSTNUMBER_REGEX = "(\\)*)";
@@ -23,6 +24,10 @@ public class ExpressionParser {
 
     private static final Pattern EXPRESSION_PATTERN = Pattern.compile(EXPRESSION_REGEX);
 
+    private ExpressionParser(){
+
+    }
+
     public static String parseAndReplaceMathExpressions(String toParse) throws ParserException, ExpressionParserException {
         StringBuffer sb = new StringBuffer();
         Matcher matcher = EXPRESSION_PATTERN.matcher(toParse);
@@ -32,6 +37,7 @@ public class ExpressionParser {
             try {
                 matcher.appendReplacement(sb, String.valueOf(ExpressionCalculator.calculate(converter.getPolishNotation())));
             } catch (ExpressionCalculatorException | PolishNotationConverterException e) {
+
                 throw new ExpressionParserException(e);
             }
         }

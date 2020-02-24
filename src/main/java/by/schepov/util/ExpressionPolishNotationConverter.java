@@ -1,7 +1,8 @@
 package by.schepov.util;
 
-import by.schepov.exception.InvalidBracketsPositionException;
+
 import by.schepov.exception.PolishNotationConverterException;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -9,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ExpressionPolishNotationConverter {
+
+    private static final Logger LOGGER = Logger.getLogger(ExpressionPolishNotationConverter.class);
 
     private String expression;
 
