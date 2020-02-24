@@ -34,8 +34,7 @@ public class FileTextReader implements TextReader {
 
     @Override
     public String read() {
-        try (FileReader reader = new FileReader(file)){
-            StringBuilder builder = new StringBuilder();
+        try {
             return Arrays.toString(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
             throw new FileTextReaderException(e);
