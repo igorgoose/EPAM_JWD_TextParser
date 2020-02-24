@@ -1,6 +1,7 @@
 package by.schepov.reader.impl;
 
 import by.schepov.exception.FileTextReaderException;
+import by.schepov.exception.FileTextReaderReadException;
 import by.schepov.reader.TextReader;
 
 import java.io.*;
@@ -25,6 +26,9 @@ public class FileTextReader implements TextReader {
     }
 
     public void setFile(File file) {
+        if(file == null){
+            throw new FileTextReaderException();
+        }
         this.file = file;
     }
 
@@ -33,11 +37,11 @@ public class FileTextReader implements TextReader {
     }
 
     @Override
-    public String read() {
+    public String read() throws FileTextReaderReadException {
         try {
             return Arrays.toString(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
-            throw new FileTextReaderException(e);
+            throw new FileTextReaderReadException(e);
         }
     }
 }

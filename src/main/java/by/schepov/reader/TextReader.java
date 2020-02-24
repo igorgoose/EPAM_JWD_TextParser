@@ -1,5 +1,7 @@
 package by.schepov.reader;
 
+import by.schepov.exception.FileTextReaderReadException;
+
 public interface TextReader {
-    String read();
+    String read() throws FileTextReaderReadException;
 }
