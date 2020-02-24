@@ -1,5 +1,8 @@
 package by.schepov.composite;
 
-public interface TextComponent {
+import java.util.List;
 
+public interface TextComponent {
+    void sort();
+    List<TextComponent> getChildren();
 }

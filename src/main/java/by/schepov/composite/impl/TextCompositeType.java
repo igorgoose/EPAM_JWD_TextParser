@@ -3,7 +3,7 @@ package by.schepov.composite.impl;
 public enum TextCompositeType {
     TEXT("(.+)(\n*\t*)"),
     PARAGRAPH("([^\\.!?]+)([\\.?!]+)(\\s*)"),
-    SENTENCE("([\\s\\.?!-]*)([^\\s\\.?!-]+)([\\s\\.?!-]*)"),
+    SENTENCE("([\\s\\.?!\\-]*)([^\\s\\.?!\\-]+)([\\s\\.?!\\-]*)"),
     LEXEME("(\\w|\\W)");
 
     TextCompositeType(String regex){

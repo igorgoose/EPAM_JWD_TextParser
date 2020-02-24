@@ -3,6 +3,8 @@ package by.schepov.composite.impl;
 
 import by.schepov.composite.TextComponent;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class TextComposite implements TextComponent {
         children.add(component);
     }
 
+    @Override
     public List<TextComponent> getChildren(){
         return children;
     }
@@ -45,4 +48,13 @@ public class TextComposite implements TextComponent {
         return stringBuilder.toString();
     }
 
+    @Override
+    public void sort() {
+        children.sort(new Comparator<TextComponent>() {
+            @Override
+            public int compare(TextComponent o1, TextComponent o2) {
+                return o1.getChildren().size() - o2.getChildren().size();
+            }
+        });
+    }
 }

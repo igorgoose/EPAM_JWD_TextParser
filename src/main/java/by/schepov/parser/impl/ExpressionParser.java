@@ -1,22 +1,42 @@
 package by.schepov.parser.impl;
 
-import by.schepov.composite.TextComponent;
-import by.schepov.exception.ParserException;
+import by.schepov.exception.*;
+import by.schepov.util.ExpressionCalculator;
+import by.schepov.util.ExpressionPolishNotationConverter;
 
-public class ExpressionParser extends TextUnitParser {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+public class ExpressionParser {
+
+    private ExpressionParser(){
+
+    }
     private final static String NUMBER_REGEX = "((\\d+)(\\.\\d+)?)";
-    private final static String PRENUMBER_REGEX = "((~)*(\\()*(~)*(\\()*)";
+    private final static String PRENUMBER_REGEX = "(~*\\(*~*\\(*)";
     private final static String POSTNUMBER_REGEX = "(\\)*)";
-    private final static String OPERATION_REGEX = "([+-*/^&|(>>)(<<)])";
+    private final static String OPERATION_REGEX = "([+\\-*/^&|]|>>|<<)";
     public static final String EXPRESSION_REGEX =
             PRENUMBER_REGEX + "?" + NUMBER_REGEX + POSTNUMBER_REGEX + "?"
                     + "(" + OPERATION_REGEX + PRENUMBER_REGEX + "?" +
                     NUMBER_REGEX + POSTNUMBER_REGEX + "?" + ")+";
 
-    @Override
-    public TextComponent parse(String toParse) throws ParserException {
-        return null;
+    private static final Pattern EXPRESSION_PATTERN = Pattern.compile(EXPRESSION_REGEX);
+
+    public static String parseAndReplaceMathExpressions(String toParse) throws ParserException, ExpressionParserException {
+        StringBuffer sb = new StringBuffer();
+        Matcher matcher = EXPRESSION_PATTERN.matcher(toParse);
+        ExpressionPolishNotationConverter converter = new ExpressionPolishNotationConverter();
+        while(matcher.find()){
+            converter.setExpression(matcher.group());
+            try {
+                matcher.appendReplacement(sb, String.valueOf(ExpressionCalculator.calculate(converter.getPolishNotation())));
+            } catch (ExpressionCalculatorException | PolishNotationConverterException e) {
+                throw new ExpressionParserException(e);
+            }
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
     public static String getNumberRegex() {

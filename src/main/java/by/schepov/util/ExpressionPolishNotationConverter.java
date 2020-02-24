@@ -1,6 +1,7 @@
 package by.schepov.util;
 
 import by.schepov.exception.InvalidBracketsPositionException;
+import by.schepov.exception.PolishNotationConverterException;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -11,16 +12,23 @@ public class ExpressionPolishNotationConverter {
 
     private String expression;
 
+    public ExpressionPolishNotationConverter() {
+
+    }
+
     public ExpressionPolishNotationConverter(String expression) {
         this.expression = expression;
     }
 
-    public void resetExpression(String newExpression) {
+
+    public void setExpression(String newExpression) {
         this.expression = newExpression;
     }
 
-    public List<String> getPolishNotation() throws InvalidBracketsPositionException {
-        //todo validation
+    public List<String> getPolishNotation() throws PolishNotationConverterException {
+        if(expression == null){
+            throw new PolishNotationConverterException("Expression is not set");
+        }
         Deque<Operator> stack = new ArrayDeque<>();
         List<String> polishNotationList = new LinkedList<>();
         int currentIndex = 0;
@@ -42,10 +50,13 @@ public class ExpressionPolishNotationConverter {
                     break;
                 case CLOSE_BRACKET:
                     if (stack.isEmpty()) {
-                        throw new InvalidBracketsPositionException();
+                        throw new PolishNotationConverterException("Invalid bracket structure");
                     }
                     stackItem = stack.pop();
-                    while (stackItem != Operator.CLOSE_BRACKET) {
+                    while (stackItem != Operator.OPEN_BRACKET) {
+                        if(stack.isEmpty()){
+                            throw new PolishNotationConverterException("Incorrect bracket structure");
+                        }
                         polishNotationList.add(stackItem.toString());
                         stackItem = stack.pop();
                     }
@@ -54,22 +65,20 @@ public class ExpressionPolishNotationConverter {
                     if (operator == Operator.SHIFT_LEFT || operator == Operator.SHIFT_RIGHT) {
                         ++currentIndex;
                     }
-                    if (stack.isEmpty()) {
-                        stack.push(operator);
-                    } else {
+                    if (!stack.isEmpty()) {
                         stackItem = stack.peekFirst();
-                        if (stackItem.getPriority() >= operator.getPriority()) {
+                        if (stackItem.getPriority() <= operator.getPriority()) {
                             stack.pop();
                             polishNotationList.add(stackItem.toString());
-                            stack.push(operator);
                         }
                     }
+                    stack.push(operator);
                     break;
 
             }
-            while(!stack.isEmpty()){
-                polishNotationList.add(stack.pop().toString());
-            }
+        }
+        while(!stack.isEmpty()){
+            polishNotationList.add(stack.pop().toString());
         }
         return polishNotationList;
     }

@@ -1,6 +1,7 @@
 package by.schepov.util;
 
 import by.schepov.exception.InvalidOperatorCharacterException;
+import by.schepov.exception.OperatorException;
 
 public enum Operator {
     TILDE('~', 0),
@@ -72,6 +73,33 @@ public enum Operator {
             case ')':
                 return CLOSE_BRACKET;
         }
-        throw new InvalidOperatorCharacterException();
+        throw new InvalidOperatorCharacterException("Invalid operator character representation");
+    }
+
+    public static int performOperation(String operator, int operandLeft, int operandRight) throws OperatorException {
+        switch (operator) {
+            case "~":
+                return ~operandLeft;
+            case "*":
+                return operandLeft * operandRight;
+            case "/":
+                return operandLeft / operandRight;
+            case "+":
+                return operandLeft + operandRight;
+            case "-":
+                return operandLeft - operandRight;
+            case "<<":
+                return operandLeft << operandRight;
+            case ">>":
+                return operandLeft >> operandRight;
+            case "&":
+                return operandLeft & operandRight;
+            case "^":
+                return operandLeft ^ operandRight;
+            case "|":
+                return operandLeft | operandRight;
+            default:
+                throw new OperatorException("Invalid operator: " + operator);
+        }
     }
 }
