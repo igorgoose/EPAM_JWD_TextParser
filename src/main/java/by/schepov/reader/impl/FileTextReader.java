@@ -36,12 +36,9 @@ public class FileTextReader implements TextReader {
     public String read() {
         try (FileReader reader = new FileReader(file)){
             StringBuilder builder = new StringBuilder();
-            String result = Arrays.toString(Files.readAllBytes(file.toPath()));
-            return result;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return Arrays.toString(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileTextReaderException(e);
         }
     }
 }
